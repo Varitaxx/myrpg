@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/rpg
+    username: root
+    password:
+  jpa:
+    database: mysql
+
+    hibernate:
+      ddl-auto: none
