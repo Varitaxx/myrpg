@@ -18,7 +18,7 @@
                 <a href="/" class="nav-link">Startseite</a>
             </li>
 
-            <li class="nav-item" sec:authorize="hasAnyRole('ADMIN')">
+            <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                 <a href="/admin" class="nav-link">Admin</a>
             </li>
 
@@ -34,9 +34,13 @@
                 <a href="/register" class="nav-link">Registrieren</a>
             </li>
 
-            <li class="nav-item" sec:authorize="hasAnyRole('USER')">
+            <li class="nav-item" sec:authorize="hasAuthority('USER')">
                 <a href="/chars" class="nav-link">Chars</a>
             </li>
+            <!--
+            <li sec:authorize="isAuthenticated()">
+              <span th:text="${#authentication.principal.authorities}"></span>
+            </li>-->
         </ul>
     </div>
 </nav>

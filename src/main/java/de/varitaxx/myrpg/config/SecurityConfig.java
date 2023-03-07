@@ -3,6 +3,8 @@ package de.varitaxx.myrpg.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,6 +18,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    @Bean // Beans können über Konstruktoren oder @Autowired eingebunden werden
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
+    @Bean
+    public JavaMailSender javaMailSender() {
+        return new JavaMailSenderImpl();
+    }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
@@ -36,8 +48,8 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/chars") // Weiterleitung nach dem Login
                 .and()
                 .authorizeRequests()
-                .requestMatchers("/", "/login/**", "/register/**","/activate/**","/forgot/**").permitAll() // Frei zugänglich
-              //  .antMatchers("/admin/**").hasRole("ADMIN") // Freigabe nur mit einer bestimmten Role
+                .requestMatchers("/", "/login/**", "/register/**","/chars/**","/forgot/**").permitAll() // Frei zugänglich
+                .requestMatchers("/admin/**").hasAuthority("ADMIN") // Freigabe nur mit einer bestimmten Role
                 .anyRequest().authenticated() // Alle anderen erfordern Anmeldung
                 .and()
                 .logout().logoutUrl("/logout")

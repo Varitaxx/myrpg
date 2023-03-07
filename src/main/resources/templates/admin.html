@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="de">
-<head th:replace="fragments.html :: head('Admin')"></head>
+<head th:replace="fragments.html :: head(title = 'Admin')"></head>
 </head>
 <body>
 
@@ -10,8 +10,36 @@
 <main class="container py-5">
     <div class="row">
         <div class="col">
-            <h1>Admin
-            </h1>
+            <h1>Admin</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">USER</th>
+                    <th scope="col">EMAIL</th>
+                    <th scope="col">STATUS</th>
+                    <th scope="col">ROLE</th>
+                    <th scope="col">EDIT</th>
+                    <th scope="col">DELETE</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="u:${users}">
+                    <td th:text="${u.id}" />
+                    <td th:text="${u.username}" />
+                    <td th:text="${u.email}" />
+                    <td th:text="${u.status}" />
+                    <td th:text="${u.role}" />
+                    <td><a th:href="@{/admin/edit/{id}(id=${u.id})}" class="btn btn-info">Edit</a></td>
+                    <td><a th:href="@{/admin/delete/{id}(id=${u.id})}" class="btn btn-danger">Delete</a></td>
+
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </main>

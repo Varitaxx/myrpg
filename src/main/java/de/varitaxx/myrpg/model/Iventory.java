@@ -16,8 +16,8 @@ import java.util.*;
 public class Iventory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue
+    private Long id;
 
     private String helmet;
 

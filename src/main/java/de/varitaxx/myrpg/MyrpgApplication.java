@@ -59,10 +59,10 @@ public class MyrpgApplication implements CommandLineRunner {
                 .role(UserRole.USER)
                 .build();
         userRepository.save(user);
+    */
 
 
-
-        var charakter = Charakter.builder()
+       /* var charakter = Charakter.builder()
                 .name("Kelda Khorram-Din")
                 .gender(Gender.FEMALE)
                 .age(24)

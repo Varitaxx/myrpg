@@ -19,8 +19,8 @@ import java.util.UUID;
 public class Charakter implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue
+    private Long id;
 
     @Column(unique = true)
     private String name;
@@ -38,6 +38,8 @@ public class Charakter implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private Rank rank;
+
+    private double gold;
 
 
     // Beziehungen zu anderen Tabellen

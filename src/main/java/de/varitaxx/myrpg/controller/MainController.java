@@ -1,11 +1,15 @@
 package de.varitaxx.myrpg.controller;
 
+import de.varitaxx.myrpg.exception.UserAlreadyExistsException;
+import de.varitaxx.myrpg.exception.UserNotFoundException;
+import de.varitaxx.myrpg.model.Charakter;
 import de.varitaxx.myrpg.model.Token;
 import de.varitaxx.myrpg.model.User;
 import de.varitaxx.myrpg.model.UserDto;
 import de.varitaxx.myrpg.repository.TokenRepository;
 import de.varitaxx.myrpg.repository.UserRepository;
 import de.varitaxx.myrpg.service.CustomEmailService;
+import de.varitaxx.myrpg.service.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -13,14 +17,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -36,16 +45,13 @@ public class MainController {
 
     private final CustomEmailService emailService;
 
+    private final UserService userService;
+
 
     @GetMapping("/")
     public String index(Model model) {
 
         return "home";
-    }
-
-    @GetMapping("chars")
-    public String chars(Model model){
-        return "chars";
     }
 
     @GetMapping({"login", "login/{sub}"})
@@ -74,11 +80,11 @@ public class MainController {
         }
         User user = userDto.convert(passwordEncoder);
         userRepository.save(user);
-        Token token = new Token(user, Token.TokenType.ACTIVATION);
-        tokenRepository.save(token);
+        //Token token = new Token(user, Token.TokenType.ACTIVATION);
+        //tokenRepository.save(token);
         //emailService.sendSimpleEmail(user.getEmail(), "Registrierung", "Du hast dich erfolgreich registriert...");
         //emailService.sendHtmlEmail(user.getEmail(), "Registrierung");
-        emailService.sendHtmlRegisterEmail(user, token.getId());
+        //emailService.sendHtmlRegisterEmail(user, token.getId());
         return "redirect:/register/success";
     }
 
@@ -88,6 +94,37 @@ public class MainController {
         return "register";
     }
 
+
+    @GetMapping("admin")
+    public String admin(Model model){
+        List<User> users = userService.findUsers();
+        model.addAttribute("users", users);
+        return "admin";
+    }
+
+    @RequestMapping(value = "admin/delete/{id}")
+    String deleteUser(@PathVariable(name = "id")Long id, Model model) throws UserNotFoundException{
+
+        userService.deleteUser(id);
+        //return "admin";
+        return admin(model);
+
+    }
+
+    @RequestMapping(value = "admin/edit/{id}")
+    public ModelAndView showEditUserForm(@PathVariable(name = "id") Long id) throws UserNotFoundException{
+
+        ModelAndView modelAndView = new ModelAndView("edituser");
+        User user = userService.findUser(id);
+        modelAndView.addObject("user", user);
+        return modelAndView;
+    }
+
+    @PostMapping("/admin/update")
+    public String updateUser(@ModelAttribute("user") User user, Model model) throws UserAlreadyExistsException, UserNotFoundException{
+        userService.updateUser(user);
+        return admin(model);
+    }
 
 
 }

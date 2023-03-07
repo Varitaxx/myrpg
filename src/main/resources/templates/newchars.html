@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="de">
+<head th:replace="fragments.html :: head(title='New Char')"></head>
+<body>
+
+<header class="container"></header>
+<nav th:replace="fragments.html :: mainNav"></nav>
+
+<main class="container py-5">
+    <div class="row">
+        <div class="col">
+            <h1>Neuer Charakter</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <form action="#" th:action="@{/newchar/save}" th:object="${charakter}"method="post">
+
+                <input type="hidden">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Charaktername</label>
+                    <input type="text" th:field="*{name}" class="form-control" placeholder="Name">
+                </div>
+
+                <div class="mb-3">
+                    <label for="gender" class="form-label">GENDER</label>
+                    <select name="gender" id="gender" th:field="*{gender}" class="form-select">
+                        <option value="MALE">männlich</option>
+                        <option value="FEMALE">weiblich</option>
+                        <option value="DIVERS">divers</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="age" class="form-label">Alter</label>
+                    <input type="text" th:field="*{age}" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label for="klasse" class="form-label">Klasse</label>
+                    <select name="klasse" id="klasse" th:field="*{klasse}" class="form-select">
+                        <option value="WARRIOR">WARRIOR</option>
+                        <option value="MONK">MONK</option>
+                        <option value="MAGE">MAGE</option>
+                        <option value="HEALER">HEALER</option>
+                        <option value="RANGED">RANGED</option>
+                        <option value="ASSASIN">ASSASIN</option>
+                        <option value="KNIGHT">KNIGHT</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="race" class="form-label">Race</label>
+                    <select name="race" id="race" th:field="*{race}" class="form-select">
+                        <option value="HUMAN">HUMAN</option>
+                        <option value="DWARF">DWARF</option>
+                        <option value="ALB">ALB</option>
+                        <option value="DROW">DROW</option>
+                        <option value="ORC">ORC</option>
+                        <option value="OGRE">OGRE</option>
+                        <option value="KHAANAN">KHAANAN</option>
+                        <option value="UNDEAD">UNDEAD</option>
+                        <option value="HALF-ALB">HALF-ALB</option>
+                        <option value="HALF-OGRE">HALF-OGRE</option>
+                        <option value="HALF-ORC">HALF-ORC</option>
+                    </select>
+                </div>
+                <p>
+                    <button type="submit" name="action" value="save" class="btn btn-primary">Save</button>&nbsp;&nbsp;
+                    <button type="submit" name="action" value="cancel" class="btn btn-info" onclick="this.form.setAttribute('novalidate', 'novalidate');">Cancel</button>
+                </p>
+
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer class="container"></footer>
+
+<script src="/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

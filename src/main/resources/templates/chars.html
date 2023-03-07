@@ -10,6 +10,40 @@
     <div class="row">
         <div class="col">
             <h1>Deine Charaktere</h1>
+            <p><a th:href="@{/newchars}">Neuer Char</a></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">NAME</th>
+                    <th scope="col">GENDER</th>
+                    <th scope="col">AGE</th>
+                    <th scope="col">KLASSE</th>
+                    <th scope="col">RACE</th>
+                    <th scope="col">RANK</th>
+                    <th scope="col">GOLD</th>
+                    <th scope="col">Löschen</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c:${charas}">
+                    <td th:text="${c.id}" />
+                    <td th:text="${c.name}" />
+                    <td th:text="${c.gender}" />
+                    <td th:text="${c.age}" />
+                    <td th:text="${c.klasse}" />
+                    <td th:text="${c.race}" />
+                    <td th:text="${c.rank}" />
+                    <td th:text="${c.gold}" />
+                    <td><a th:href="@{/chars/delete/{id}(id=${c.id})}" class="btn btn-danger">Delete</a></td>
+
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </main>

@@ -19,14 +19,20 @@ import java.util.UUID;
 public class Item implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue
+    private Long id;
 
     @Column(unique = true)
     private String name;
 
     @Enumerated(EnumType.STRING)
+    private Place place;
+
+    @Enumerated(EnumType.STRING)
     private Category category;
+
+    @Enumerated(EnumType.STRING)
+    private Armortype armortype;
 
     private double price;
 

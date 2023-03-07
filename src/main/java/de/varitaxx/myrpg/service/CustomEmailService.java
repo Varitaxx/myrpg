@@ -36,6 +36,18 @@ public class CustomEmailService {
         mailSender.send(msg);
     }
 
+    public void sendHtmlEmail(String to, String subject) throws MessagingException {
+        MimeMessage msg = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+        helper.setFrom("rpg@localhost");
+        helper.setTo(to);
+        helper.setSubject(subject);
+        Map<String, Object> vars = new HashMap<>();
+        vars.put("link", "http://localhost:8080/activate/1234");
+        helper.setText(renderTemplateEmail(vars, "email-register"), true);
+        mailSender.send(msg);
+    }
+
     public void sendHtmlRegisterEmail(User user, UUID token) throws MessagingException {
         MimeMessage msg = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(msg, true);
@@ -45,6 +57,18 @@ public class CustomEmailService {
         Map<String, Object> vars = new HashMap<>();
         vars.put("link", "http://localhost:8080/activate?token=" + token);
         helper.setText(renderTemplateEmail(vars, "email-register"), true);
+        mailSender.send(msg);
+    }
+
+    public void sendHtmlForgotEmail(User user, UUID token) throws MessagingException {
+        MimeMessage msg = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+        helper.setFrom("rpg@localhost");
+        helper.setTo(user.getEmail());
+        helper.setSubject("Passwort zurücksetzen");
+        Map<String, Object> vars = new HashMap<>();
+        vars.put("link", "http://localhost:8080/forgot/reset?token=" + token);
+        helper.setText(renderTemplateEmail(vars, "email-forgot"), true);
         mailSender.send(msg);
     }
 

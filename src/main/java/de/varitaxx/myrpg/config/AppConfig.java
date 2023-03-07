@@ -22,32 +22,5 @@ public class AppConfig {
 
     private final UserRepository userRepository;
 
-    @Bean // Beans können über Konstruktoren oder @Autowired eingebunden werden
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
-    /*@Bean
-    public UserDetailsService userDetailsService() {
-        return username -> (UserDetails) userRepository.findByEmailIgnoreCase(username) // Muss UserDetails zurückgeben
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
-
-    @Bean // Für die Authentifizierung wird ein userDetailsService und Encoder hinterlegt
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService());
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
-*/
-    @Bean
-    public JavaMailSender javaMailSender() {
-        return new JavaMailSenderImpl();
-    }
 }
